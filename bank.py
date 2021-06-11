@@ -5,7 +5,7 @@ class Account:
       bank_name="Stanbic Bank"
 
 
-      def __init__(self,name,phone,loan_limit,transation):
+      def __init__(self,name,phone,loan_limit):
           self.name=name
           self.phone=phone
           self.transation=[]
@@ -13,6 +13,10 @@ class Account:
           self.balance=0
           self.loan=0
       def  deposit(self,amount):
+          try:
+              10+amount
+          except TypeError:
+              return f"The amount must be in figures"
           if amount<=0:
               return f"{self.name} you must have amount that is greater than 0"
           else:
@@ -30,6 +34,10 @@ class Account:
           return self.balance
 
       def withdraw(self,amount):
+          try :
+              10 + amount
+          except TypeError:
+              return f"The amount must be in figures"    
           if amount<0:
               return f"Dear{self.name} with {self.phone}  your balance is {self.balance}"
           elif amount>self.balance:
@@ -56,7 +64,7 @@ class Account:
               amount=transation["amount"]
               balance=transation["balance"]
               time=transation["time"]
-              print(f"For the time of Transation {time.strftime('%D')} your statment {narration} the money you have{amount}Balance {balance}")
+              print(f"For the time of Transation {time.strftime('%D')} your statement {narration} the money you have{amount}Balance {balance}")
 
 
       def withdraw(self,amount):
@@ -81,13 +89,37 @@ class Account:
              return f"Dear {self.name} you had {amount} amount and now it has increased to  balance now is {self.balance}"
 
       def repay_loan(self,amount):
-          if(amount)<0:
-              return f"Dear {self.name} you had {amount} amount and now it has increased to  balance now is {self.balance}"
+          if amount<0:
+              return f"Dear {self.name} you had paid KSH. {amount} amount and  your  balance is {self.balance}"
 
-          elif  amount<self.loan:
+          elif amount<self.loan:
               self.loan-=amount
               return f"You have paid {amount} and the remaning loan is{self.loan} "
           else:
-              deference=amount-self.loan
-              self.balance+=deference
-              return f"Dear {self.name}, you have succesfully paid your loan which is {self.loan}, your new balance is{self.balance}"
+              difference=amount-self.loan
+              self.balance+=difference
+              self.loan=0
+              return f"Dear {self.name}, you have successfully paid your loan which is {self.loan}, your new balance is{self.balance}"
+      def transfer(self,amount,account):
+          try:
+              10 + amount
+          except TypeError:
+             return f"amount must be integer" 
+          if amount<0:
+              return f"try again"
+          fees=amount*0.05
+          if amount+fees>self.balance:
+              return f"Your balance is {self.balance} and you need {amount+fees}"
+          else:
+              self.balance-=amount+fees
+              account.deposit(amount)
+              return f"Your balance is {self.balance},the fee deducted was {fees}"
+          #Inheritance
+class MobileMoneyAccount(Account):
+    def __init__(self,name,phone,service_provider,loan_limit=10000):
+        super().__init__(name,phone,loan_limit)
+        self.service_provider=service_provider
+        
+    def buy_airtime(self,amount):
+       self.balance-=amount
+       return f"you have successfully bought {amount} "
