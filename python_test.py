@@ -21,9 +21,11 @@ def list():
         y=x.remove("b")
         print(y)
 def divisible_by_7():
+        c=[]
         for number in range(100,200):
                 if number%7==0:
-                        print(number)
+                        c.append(number)
+                        print(c)
 class Rectangle:
         def __ini__(self,width,length):
                 self.width=width
